@@ -4,6 +4,9 @@ import CONFIG from "../../config";
 import TabsContent from "../Tabs/TabsContent";
 import TabsSelect from "../Tabs/TabsSelect";
 import FakeResponce from "../FakeResponse";
+import ContextWeather from "../ContextWeather";
+import RequestApi from "../../Helper/RequestApi";
+
 const TABS = {
   Now: "Now",
   Details: "Details",
@@ -12,32 +15,47 @@ const TABS = {
 
 export default function Container() {
   const [tabsActive, setTabs] = React.useState(TABS.Now);
-  const [response, setResponse] = React.useState(FakeResponce);
+  const [searchCity, setSearchCity] = React.useState();
+  const [cityName, setCityName] = React.useState(FakeResponce);
+  const [forecast, setForecast] = React.useState("");
+  const [listFavorite, setListFavorite] = React.useState("");
+
+  const globalContext = {
+    tabsActive,
+    setTabs,
+    searchCity,
+    setSearchCity,
+    cityName,
+    setCityName,
+    forecast,
+    setForecast,
+    listFavorite,
+    setListFavorite,
+  };
 
   const requestWeather = (cityName) => {
-    fetch(
-      `${CONFIG.API_URL}${CONFIG.WEATHER}?q=${cityName}&appid=${CONFIG.API_KEY}`
-    )
-      .then((res) => res.json())
-      .then((JSON) => setResponse(JSON));
+    RequestApi(cityName, CONFIG.WEATHER);
   };
+
   const changeTab = (event) => {
     const tabsName = event.target.innerHTML;
     setTabs(TABS[tabsName]);
   };
   return (
     <div className='box'>
-      <SearchForm onSubmit={requestWeather} />
-      <div className='box__content'>
-        <div className='box__content-left'>
-          <TabsContent selectTab={tabsActive} info={response} />
-          <TabsSelect changeTab={changeTab} tabs={TABS} />
+      <ContextWeather.Provider value={globalContext}>
+        <SearchForm onSubmit={requestWeather} />
+        <div className='box__content'>
+          <div className='box__content-left'>
+            <TabsContent selectTab={tabsActive} info={searchCity} />
+            <TabsSelect changeTab={changeTab} tabs={TABS} />
+          </div>
+          <div className='box__content-right'>
+            <div className='box__right-title'>Added Locations:</div>
+            <ul className='box__right-list'></ul>
+          </div>
         </div>
-        <div className='box__content-right'>
-          <div className='box__right-title'>Added Locations:</div>
-          <ul className='box__right-list'></ul>
-        </div>
-      </div>
+      </ContextWeather.Provider>
     </div>
   );
 }

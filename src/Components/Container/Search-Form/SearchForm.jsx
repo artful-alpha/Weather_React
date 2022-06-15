@@ -1,24 +1,45 @@
 import React from "react";
+import CONFIG from "../../../config";
+import ContextWeather from "../../ContextWeather";
+import Forecast from "../../Tabs/Forecast";
 
-export default function SearchForm({ onSubmit }) {
-  const [searchInput, setSearch] = React.useState("");
+export default function SearchForm() {
+  const [value, setInput] = React.useState("");
+  const globalContext = React.useContext(ContextWeather);
 
-  const sendForm = (e) => {
-    e.preventDefault();
-    const cityName = e.target[0].value;
+  const { cityName, setCityName, forecast, setForecast } = globalContext;
 
-    if (!cityName) return;
+  const URL = `${CONFIG.API_URL}${CONFIG.WEATHER}?q=${value}&appid=${CONFIG.API_KEY}`;
+  const URL_FORECAST = `${CONFIG.API_URL}${CONFIG.FORECAST}?q=${value}&appid=${CONFIG.API_KEY}&units=${CONFIG.UNITS}&cnt=${CONFIG.NUMBER_FORECASTS}`;
 
-    onSubmit(cityName);
-    setSearch("");
+  const sendForm = (ev) => {
+    ev.preventDefault();
+
+    if (!value) return;
+
+    setInput(value);
+    setInput("");
+    // This request Weather URL
+    fetch(URL)
+      .then((res) => res.json())
+      .then((JSON) => {
+        setCityName(JSON);
+      });
+    // This request Weather FORECAST
+    fetch(URL_FORECAST)
+      .then((res) => res.json())
+      .then((JSON) => {
+        setForecast(JSON);
+      });
   };
-
+  console.log(cityName);
+  console.log(forecast);
   return (
     <div className=''>
       <form className='box__search' onSubmit={sendForm}>
         <input
-          onChange={(e) => setSearch(e.target.value)}
-          value={searchInput}
+          onChange={(e) => setInput(e.target.value)}
+          value={value}
           className='box__search-input'
           type='search'
           name='search'

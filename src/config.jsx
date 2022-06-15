@@ -5,6 +5,7 @@ export const CONFIG = {
   WEATHER: "weather",
   FORECAST: "forecast",
   NUMBER_FORECASTS: 6,
+  UNITS: "metric",
 };
 
 export default CONFIG;

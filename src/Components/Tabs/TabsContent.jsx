@@ -1,10 +1,10 @@
 import Now from "./Now";
 import Details from "./Details";
 import Forecast from "./Forecast";
-export default function TabsContent({ selectTab, info }) {
+export default function TabsContent({ selectTab }) {
   const renderTab =
     selectTab === "Now" ? (
-      <Now info={info} />
+      <Now />
     ) : selectTab === "Details" ? (
       <Details />
     ) : (
