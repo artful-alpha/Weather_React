@@ -32,8 +32,7 @@ export default function SearchForm() {
         setForecast(JSON);
       });
   };
-  console.log(cityName);
-  console.log(forecast);
+
   return (
     <div className=''>
       <form className='box__search' onSubmit={sendForm}>

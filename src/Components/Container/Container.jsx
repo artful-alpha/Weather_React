@@ -6,6 +6,7 @@ import TabsSelect from "../Tabs/TabsSelect";
 import FakeResponce from "../FakeResponse";
 import ContextWeather from "../ContextWeather";
 import RequestApi from "../../Helper/RequestApi";
+import FavoriteCitys from "./FavoriteCitys/FavoriteCitys";
 
 const TABS = {
   Now: "Now",
@@ -18,7 +19,7 @@ export default function Container() {
   const [searchCity, setSearchCity] = React.useState();
   const [cityName, setCityName] = React.useState(FakeResponce);
   const [forecast, setForecast] = React.useState("");
-  const [listFavorite, setListFavorite] = React.useState("");
+  const [listFavorite, setListFavorite] = React.useState([]);
 
   const globalContext = {
     tabsActive,
@@ -50,10 +51,7 @@ export default function Container() {
             <TabsContent selectTab={tabsActive} info={searchCity} />
             <TabsSelect changeTab={changeTab} tabs={TABS} />
           </div>
-          <div className='box__content-right'>
-            <div className='box__right-title'>Added Locations:</div>
-            <ul className='box__right-list'></ul>
-          </div>
+          <FavoriteCitys />
         </div>
       </ContextWeather.Provider>
     </div>
