@@ -4,14 +4,16 @@ import convertTemp from "../../Helper/convertTemp";
 import iconWeather from "../../Helper/iconWeather";
 export default function Now() {
   const globalContext = React.useContext(ContextWeather);
-  const { cityName, setListFavorite } = globalContext;
+  const { cityName, setListFavorite, listFavorite } = globalContext;
   const temp = convertTemp(cityName.main.temp);
   const icon_url = iconWeather(cityName.weather[0].icon);
   const { name } = cityName;
 
   const clickFavorite = () => {
-    setListFavorite((old_list) => [...old_list, name]);
+    setListFavorite((arr) => setListFavorite([...arr, name]));
+    localStorage.setItem("listFavorite", JSON.stringify(listFavorite));
   };
+
   return (
     <div
       // id='tab_now'
