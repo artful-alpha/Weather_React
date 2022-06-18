@@ -7,15 +7,17 @@ import { timeWeather } from "../../Helper/timeWeather";
 export default function Forecast() {
   const globalContext = React.useContext(ContextWeather);
   const { forecast } = globalContext;
-
+  const floorTemp = (temp) => {
+    return Math.floor(temp);
+  };
   const ForecastList = forecast.list.map((item) => (
     <ForecastItem
       key={item.dt}
-      forecastDate={dayWeather(item.dt_txt)}
-      forecastTime={timeWeather(item.dt)}
+      forecastDate={dayWeather(item.dt)}
+      forecastTime={timeWeather(item.dt_txt)}
       forecastDescription={item.weather[0].description}
-      temp={item.main.temp}
-      forecastFeels={item.main.feels_like}
+      temp={floorTemp(item.main.temp)}
+      forecastFeels={floorTemp(item.main.feels_like)}
       weatherIcon={iconWeather(item.weather[0].icon)}
     />
   ));

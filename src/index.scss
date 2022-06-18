@@ -135,9 +135,12 @@ body {
   border-right: 1px solid #000000;
 }
 
-.box__right-tab:hover {
+.box__right-tab.active {
   background-color: #343434;
   color: #fff;
+  &:hover {
+    background-color: #101010;
+  }
 }
 
 .box__right-tab:last-child {
@@ -286,7 +289,7 @@ body {
   display: block;
 }
 .onlike {
-  stroke: yellowgreen;
+  stroke: red;
 }
 .item-city {
   display: flex;

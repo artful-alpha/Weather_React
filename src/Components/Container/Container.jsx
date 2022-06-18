@@ -17,9 +17,11 @@ const TABS = {
 export default function Container() {
   const [tabsActive, setTabs] = React.useState(TABS.Now);
   const [searchCity, setSearchCity] = React.useState();
-  const [cityName, setCityName] = React.useState(FakeResponce);
+  const [cityName, setCityName] = React.useState();
   const [forecast, setForecast] = React.useState("");
-  const [listFavorite, setListFavorite] = React.useState([]);
+  const [listFavorite, setListFavorite] = React.useState(
+    JSON.parse(localStorage.getItem("listFavorite")) || []
+  );
 
   const globalContext = {
     tabsActive,
@@ -48,7 +50,11 @@ export default function Container() {
         <SearchForm onSubmit={requestWeather} />
         <div className='box__content'>
           <div className='box__content-left'>
-            <TabsContent selectTab={tabsActive} info={searchCity} />
+            <TabsContent
+              selectTab={tabsActive}
+              info={searchCity}
+              cityName={cityName}
+            />
             <TabsSelect changeTab={changeTab} tabs={TABS} />
           </div>
           <FavoriteCitys />

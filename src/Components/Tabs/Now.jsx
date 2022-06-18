@@ -5,14 +5,21 @@ import iconWeather from "../../Helper/iconWeather";
 export default function Now() {
   const globalContext = React.useContext(ContextWeather);
   const { cityName, setListFavorite, listFavorite } = globalContext;
+
   const temp = convertTemp(cityName.main.temp);
   const icon_url = iconWeather(cityName.weather[0].icon);
   const { name } = cityName;
 
   const clickFavorite = () => {
-    setListFavorite((arr) => setListFavorite([...arr, name]));
-    localStorage.setItem("listFavorite", JSON.stringify(listFavorite));
+    if (listFavorite.includes(name)) return;
+    setListFavorite((arr) => [...arr, name]);
   };
+
+  React.useEffect(() => {
+    localStorage.setItem("listFavorite", JSON.stringify(listFavorite));
+  });
+
+  const isAddFavorite = listFavorite.includes(name) ? "onlike" : "like";
 
   return (
     <div
@@ -37,7 +44,7 @@ export default function Now() {
             fill='none'
             xmlns='http://www.w3.org/2000/svg'>
             <path
-              className='like'
+              className={isAddFavorite}
               opacity='1'
               fillRule='evenodd'
               clipRule='evenodd'
